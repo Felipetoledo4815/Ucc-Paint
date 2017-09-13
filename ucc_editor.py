@@ -32,7 +32,8 @@ import os.path as osp
 from ucc_marker import CG_Marker
 from ucc_rectangle import CG_Rectangle
 from PolyLine import CG_PolyLine
-from ucc_bezier import CG_Bezier
+from ucc_bezier import CG_BezierQ
+from ucc_bezier import CG_BezierC
 
 
 ICON_DIR            = "icons"           # Los iconos estan en un sub-directorio
@@ -46,7 +47,7 @@ class CG_Toolbox(Gtk.HBox):
     # defino un enum con estas variables con las que voy a moverme en
     # la caja de herramientas, range es un generador de numeros, en este
     # caso generaria 0, 1, 2 y 3 y al 0 lo asigna a RECT, el 1 a BEZIER y asi...
-    RECT, BEZIER, ELLIPSE, LINE, TRIANGLE, NONE= range(6)
+    RECT, BEZIERQ, BEZIERC, ELLIPSE, LINE, TRIANGLE, NONE= range(7)
 
     def __init__(self):
         super(CG_Toolbox, self).__init__()
@@ -54,7 +55,8 @@ class CG_Toolbox(Gtk.HBox):
         # kind indica el tipo de herramienta que se va a emplear a partir del enum
         for svg_file, hint, kind in (
                     ("ucc_rect.svg",     "Rectangulo",   CG_Toolbox.RECT),
-                    ("ucc_bezier.svg",   "Curva Bezier", CG_Toolbox.BEZIER),
+                    ("ucc_bezierQ.svg",   "Curva Bezier Cuadrática", CG_Toolbox.BEZIERQ),
+                    ("ucc_bezierC.svg", "Curva Bezier Cúbica", CG_Toolbox.BEZIERC),
                     ("ucc_ellipse.svg",  "Ellipse",      CG_Toolbox.ELLIPSE),
                     ("ucc_line.svg",     "Linea recta",  CG_Toolbox.LINE),
                     ("ucc_triangle.svg", "Triangulo",    CG_Toolbox.TRIANGLE) ):
@@ -170,14 +172,20 @@ class CG_Canvas(Gtk.ScrolledWindow):
                         color = self.gdkcolor_to_int(lcolor))
             self.toolbox.mode = CG_Toolbox.NONE
             CG_Toolbox.on_button_clicked(self.toolbox, self.toolbox, CG_Toolbox.NONE)   #Deberia pasarle un btn pero nunca se usa porque adentro de la f() hace un for
-        elif self.toolbox.mode == CG_Toolbox.BEZIER:
-            CG_Bezier(self.sheet, event.x, event.y,
+        elif self.toolbox.mode == CG_Toolbox.BEZIERQ:
+            CG_BezierQ(self.sheet, event.x, event.y,
                       width=lw,
                       color=self.gdkcolor_to_int(lcolor)
                       )
             self.toolbox.mode = CG_Toolbox.NONE
             CG_Toolbox.on_button_clicked(self.toolbox, self.toolbox, CG_Toolbox.NONE)   #Deberia pasarle un btn pero nunca se usa porque adentro de la f() hace un for
-
+        elif self.toolbox.mode == CG_Toolbox.BEZIERC:
+            CG_BezierC(self.sheet, event.x, event.y,
+                       width=lw,
+                       color=self.gdkcolor_to_int(lcolor)
+                       )
+            self.toolbox.mode = CG_Toolbox.NONE
+            CG_Toolbox.on_button_clicked(self.toolbox, self.toolbox, CG_Toolbox.NONE)  # Deberia pasarle un btn pero nunca se usa porque adentro de la f() hace un for
 
 
 
