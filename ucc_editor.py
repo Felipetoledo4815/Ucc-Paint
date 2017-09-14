@@ -34,7 +34,8 @@ from ucc_rectangle import CG_Rectangle
 from PolyLine import CG_PolyLine
 from ucc_bezier import CG_BezierQ
 from ucc_bezier import CG_BezierC
-
+from ucc_ellipse import CG_Ellipse
+from ucc_triangle import CG_Triangle
 
 ICON_DIR            = "icons"           # Los iconos estan en un sub-directorio
 
@@ -186,8 +187,22 @@ class CG_Canvas(Gtk.ScrolledWindow):
                        )
             self.toolbox.mode = CG_Toolbox.NONE
             CG_Toolbox.on_button_clicked(self.toolbox, self.toolbox, CG_Toolbox.NONE)  # Deberia pasarle un btn pero nunca se usa porque adentro de la f() hace un for
-
-
+        elif self.toolbox.mode == CG_Toolbox.ELLIPSE:
+            CG_Ellipse(self.sheet, event.x, event.y,
+                       line_width = lw,
+                       stroke_color = self.gdkcolor_to_int(lcolor),
+                       fill_color = self.gdkcolor_to_int(fcolor)
+                       )
+            self.toolbox.mode = CG_Toolbox.NONE
+            CG_Toolbox.on_button_clicked(self.toolbox, self.toolbox, CG_Toolbox.NONE)
+        elif self.toolbox.mode == CG_Toolbox.TRIANGLE:
+            CG_Triangle(self.sheet, event.x, event.y,
+                        line_color=self.gdkcolor_to_int(lcolor),
+                        fill_color=self.gdkcolor_to_int(fcolor),
+                        width=lw
+                        )
+            self.toolbox.mode = CG_Toolbox.NONE
+            CG_Toolbox.on_button_clicked(self.toolbox, self.toolbox, CG_Toolbox.NONE)
 
 
 
