@@ -67,9 +67,9 @@ class CG_Marker():
             automaticamente (llamada a goto_x_y), y llamara al handler para
             comunicar esta corrección al 'dueno' del marcador.
         """
-        if event.button.button == 1:
-            self.goto_x_y(event.x, event.y)
-            self.handler(self.startx, self.starty)
+        # if event.button.button == 1:
+        self.goto_x_y(event.x, event.y)
+        self.handler(self.startx, self.starty)
 
 
     def on_button_release(self, src, tgt, event):
@@ -82,17 +82,17 @@ class CG_Marker():
     def on_motion_notify(self, src, tgt, event):
         """ Atención a movimientos del raton.
         """
-        if event.button.button == 1:                    # Boton 1 oprimido?
-            if self.startx == None:                     # Si no se detectó correctamente
-                return                                  # el activar (oprimir), salimos
+        # if event.button.button == 1:                    # Boton 1 oprimido?
+        if self.startx == None:                     # Si no se detectó correctamente
+            return                                  # el activar (oprimir), salimos
 
-            dx = event.x - self.startx                  # Calcular cuanto se movio
-            dy = event.y - self.starty
+        dx = event.x - self.startx                  # Calcular cuanto se movio
+        dy = event.y - self.starty
 
-            self.goto_x_y(self.marker.get_property("x") + dx,   # Corregir posicion
-                          self.marker.get_property("y") + dy)
+        self.goto_x_y(self.marker.get_property("x") + dx,   # Corregir posicion
+                      self.marker.get_property("y") + dy)
 
-            self.handler(self.startx, self.starty)      # e informar al propietario
+        self.handler(self.startx, self.starty)      # e informar al propietario
                                                         # del marcador
 
     def goto_x_y(self, x, y, update = True):
